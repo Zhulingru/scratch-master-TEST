@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { RAW_QUESTIONS } from './constants';
 import { Question } from './types';
 import { shuffleArray } from './utils';
+import { exportToExcel } from './utils/excelExport';
 import QuestionCard from './components/QuestionCard';
 
 const App: React.FC = () => {
@@ -103,12 +104,28 @@ const App: React.FC = () => {
                 <p className="opacity-90 text-lg">
                     你在 10 題中答對了 {score / 10} 題。
                 </p>
-                <button 
-                    onClick={initializeQuiz}
-                    className="mt-6 bg-white text-indigo-600 font-bold py-2 px-6 rounded-full shadow-md hover:scale-105 transition-transform active:scale-95"
-                >
-                    再測驗一次
-                </button>
+                <div className="mt-6 flex gap-4 justify-center flex-wrap">
+                    <button 
+                        onClick={() => exportToExcel({
+                            questions,
+                            userAnswers,
+                            score,
+                            totalQuestions: questions.length
+                        })}
+                        className="bg-white text-indigo-600 font-bold py-2 px-6 rounded-full shadow-md hover:scale-105 transition-transform active:scale-95 flex items-center gap-2"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        導出 Excel
+                    </button>
+                    <button 
+                        onClick={initializeQuiz}
+                        className="bg-white text-indigo-600 font-bold py-2 px-6 rounded-full shadow-md hover:scale-105 transition-transform active:scale-95"
+                    >
+                        再測驗一次
+                    </button>
+                </div>
             </div>
         )}
 
